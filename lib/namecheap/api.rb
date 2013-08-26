@@ -26,7 +26,7 @@ module Namecheap
       options = init_args.merge(options).merge({:command => command})
       options.camelize_keys!
       
-      Rails.logger.debug("calling #{command} with #{options.to_s}")
+      puts "calling #{command} with #{options.to_s}"
       
       case method
       when 'get'
