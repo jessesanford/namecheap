@@ -42,7 +42,7 @@ module Namecheap
 
     def init_args
       options = {
-        :ApiUser  => Namecheap.username,
+        :APIUser  => Namecheap.username,
         :UserName => Namecheap.username,
         :ApiKey   => Namecheap.key,
         :ClientIp => Namecheap.client_ip
