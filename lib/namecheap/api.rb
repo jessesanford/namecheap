@@ -30,13 +30,13 @@ module Namecheap
       
       case method
       when 'get'
-        ProxyParty.get(ENDPOINT, options)
+        self.proxy_party.get(ENDPOINT, options)
       when 'post'
-        ProxyParty.post(ENDPOINT, options)
+        self.proxy_party.post(ENDPOINT, options)
       when 'put'
-        ProxyParty.put(ENDPOINT, options)
+        self.proxy_party.put(ENDPOINT, options)
       when 'delete'
-        ProxyParty.delete(ENDPOINT, options)
+        self.proxy_party.delete(ENDPOINT, options)
       end
     end
 

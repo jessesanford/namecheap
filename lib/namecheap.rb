@@ -38,5 +38,6 @@ module Namecheap
   self.ssl = Namecheap::Ssl.new
   self.users = Namecheap::Users.new
   self.whois_guard = Namecheap::Whois_Guard.new
+  self.proxy_party = ProxyParty.new
 
 end
