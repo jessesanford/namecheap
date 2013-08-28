@@ -1,6 +1,5 @@
 module Namecheap
   class Api
-    attr_accessor :proxy_party
     
     SANDBOX = 'https://api.sandbox.namecheap.com/xml.response'
     PRODUCTION = 'https://api.namecheap.com/xml.response'
@@ -38,8 +37,6 @@ module Namecheap
         self.class.delete(endpoint,{:body=>options})
       end
     end
-  
-    self.proxy_party = ProxyParty.new
 
     def get(command, options = {})
       request 'get', command, options
@@ -58,6 +55,7 @@ module Namecheap
     end
 
     def request(method, command, options = {})
+      proxy_party = ProxyParty.new
       command = 'namecheap.' + command
       options = init_args.merge(options).merge({:command => command})
       options.camelize_keys!
@@ -66,13 +64,13 @@ module Namecheap
       
       case method
       when 'get'
-        self.proxy_party.get(ENDPOINT, options)
+        proxy_party.get(ENDPOINT, options)
       when 'post'
-        self.proxy_party.post(ENDPOINT, options)
+        proxy_party.post(ENDPOINT, options)
       when 'put'
-        self.proxy_party.put(ENDPOINT, options)
+        proxy_party.put(ENDPOINT, options)
       when 'delete'
-        self.proxy_party.delete(ENDPOINT, options)
+        proxy_party.delete(ENDPOINT, options)
       end
     end
 
