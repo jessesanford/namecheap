@@ -32,11 +32,11 @@ module Namecheap
       when 'get'
         ProxyParty.get(ENDPOINT, {:body=>options})
       when 'post'
-        ProxyParty.post(ENDPOINT, options)
+        ProxyParty.post(ENDPOINT, {:body=>options})
       when 'put'
-        ProxyParty.put(ENDPOINT, options)
+        ProxyParty.put(ENDPOINT, {:body=>options})
       when 'delete'
-        ProxyParty.delete(ENDPOINT, options)
+        ProxyParty.delete(ENDPOINT, {:body=>options})
       end
     end
 
