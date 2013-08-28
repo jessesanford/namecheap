@@ -30,7 +30,7 @@ module Namecheap
   #   Namecheap.key = 'newkey'
   delegate *(Config.public_instance_methods(false) << { :to => Config })
 
-  attr_accessor :domains, :dns, :ns, :transfers, :ssl, :users, :whois_guard
+  attr_accessor :domains, :dns, :ns, :transfers, :ssl, :users, :whois_guard, :proxy_party
   self.domains = Namecheap::Domains.new
   self.dns = Namecheap::Dns.new
   self.ns = Namecheap::Ns.new
