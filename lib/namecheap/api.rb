@@ -30,7 +30,7 @@ module Namecheap
       
       case method
       when 'get'
-        ProxyParty.get(ENDPOINT, options)
+        ProxyParty.get(ENDPOINT, {:body=>options})
       when 'post'
         ProxyParty.post(ENDPOINT, options)
       when 'put'
