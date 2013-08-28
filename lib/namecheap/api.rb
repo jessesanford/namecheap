@@ -4,6 +4,40 @@ module Namecheap
     PRODUCTION = 'https://api.namecheap.com/xml.response'
     ENVIRONMENT = defined?(Rails) && Rails.respond_to?(:env) ? Rails.env : (ENV["RACK_ENV"] || 'development')
     ENDPOINT = (ENVIRONMENT == 'production' ? PRODUCTION : SANDBOX)
+    
+    class ProxyParty
+      include HTTParty
+      # Allows setting http proxy information to be used
+      #
+      #   class Foo
+      #     include HTTParty
+      #     http_proxy 'http://foo.com', 80, 'user', 'pass'
+      #   end
+  
+      #http_proxy 'localhost', 8888
+  
+      def get(endpoint, options)
+        puts "getting #{endpoint} with #{options.to_s}"
+        self.class.get(endpoint,{:body=>options})
+      end
+  
+      def post(endpoint, options)
+        puts "posting #{endpoint} with #{options.to_s}"
+        self.class.post(endpoint,{:body=>options})
+      end
+  
+      def put(endpoint, options)
+        puts "putting #{endpoint} with #{options.to_s}"
+        self.class.put(endpoint,{:body=>options})
+      end
+  
+      def delete(endpoint, options)
+        puts "deleting #{endpoint} with #{options.to_s}"
+        self.class.delete(endpoint,{:body=>options})
+      end
+    end
+  
+    proxy_party = ProxyParty.new
 
     def get(command, options = {})
       request 'get', command, options
@@ -30,13 +64,13 @@ module Namecheap
       
       case method
       when 'get'
-        self.proxy_party.get(ENDPOINT, options)
+        proxy_party.get(ENDPOINT, options)
       when 'post'
-        self.proxy_party.post(ENDPOINT, options)
+        proxy_party.post(ENDPOINT, options)
       when 'put'
-        self.proxy_party.put(ENDPOINT, options)
+        proxy_party.put(ENDPOINT, options)
       when 'delete'
-        self.proxy_party.delete(ENDPOINT, options)
+        proxy_party.delete(ENDPOINT, options)
       end
     end
 

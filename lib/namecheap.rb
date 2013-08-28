@@ -38,39 +38,5 @@ module Namecheap
   self.ssl = Namecheap::Ssl.new
   self.users = Namecheap::Users.new
   self.whois_guard = Namecheap::Whois_Guard.new
-  
-  class ProxyParty
-    include HTTParty
-    # Allows setting http proxy information to be used
-    #
-    #   class Foo
-    #     include HTTParty
-    #     http_proxy 'http://foo.com', 80, 'user', 'pass'
-    #   end
-  
-    #http_proxy 'localhost', 8888
-  
-    def get(endpoint, options)
-      puts "getting #{endpoint} with #{options.to_s}"
-      self.class.get(endpoint,{:body=>options})
-    end
-  
-    def post(endpoint, options)
-      puts "posting #{endpoint} with #{options.to_s}"
-      self.class.post(endpoint,{:body=>options})
-    end
-  
-    def put(endpoint, options)
-      puts "putting #{endpoint} with #{options.to_s}"
-      self.class.put(endpoint,{:body=>options})
-    end
-  
-    def delete(endpoint, options)
-      puts "deleting #{endpoint} with #{options.to_s}"
-      self.class.delete(endpoint,{:body=>options})
-    end
-  end
-  
-  self.proxy_party = ProxyParty.new
 
 end
