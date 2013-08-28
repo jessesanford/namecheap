@@ -30,19 +30,19 @@ module Namecheap
       
       case method
       when 'get'
-        HTTParty.get(ENDPOINT, options)
+        ProxyParty.get(ENDPOINT, options)
       when 'post'
-        HTTParty.post(ENDPOINT, options)
+        ProxyParty.post(ENDPOINT, options)
       when 'put'
-        HTTParty.put(ENDPOINT, options)
+        ProxyParty.put(ENDPOINT, options)
       when 'delete'
-        HTTParty.delete(ENDPOINT, options)
+        ProxyParty.delete(ENDPOINT, options)
       end
     end
 
     def init_args
       options = {
-        :APIUser  => Namecheap.username,
+        :ApiUser  => Namecheap.username,
         :UserName => Namecheap.username,
         :ApiKey   => Namecheap.key,
         :ClientIp => Namecheap.client_ip
