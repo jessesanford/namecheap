@@ -37,7 +37,7 @@ module Namecheap
       end
     end
   
-    proxy_party = ProxyParty.new
+    self.proxy_party = ProxyParty.new
 
     def get(command, options = {})
       request 'get', command, options
@@ -64,13 +64,13 @@ module Namecheap
       
       case method
       when 'get'
-        proxy_party.get(ENDPOINT, options)
+        self.proxy_party.get(ENDPOINT, options)
       when 'post'
-        proxy_party.post(ENDPOINT, options)
+        self.proxy_party.post(ENDPOINT, options)
       when 'put'
-        proxy_party.put(ENDPOINT, options)
+        self.proxy_party.put(ENDPOINT, options)
       when 'delete'
-        proxy_party.delete(ENDPOINT, options)
+        self.proxy_party.delete(ENDPOINT, options)
       end
     end
 
