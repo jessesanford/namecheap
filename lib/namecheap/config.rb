@@ -36,7 +36,8 @@ module Namecheap
     end
 
     option :key, :default => 'apikey'
-    option :username, :default => 'apiuser'
+    option :username, :default => 'username'
+    option :apiuser, :default => 'apiuser'
     option :client_ip, :default => '127.0.0.1'
 
     # Configure namecheap from a hash. This is usually called after parsing a
