@@ -1,6 +1,7 @@
 require 'httparty'
 require 'monkey_patch'
 require 'pp'
+require "#{File.dirname(__FILE__)}/lib/namecheap/api.rb"
 
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/namecheap")
 Dir.glob("#{File.dirname(__FILE__)}/namecheap/*.rb") { |lib| require File.basename(lib, '.*') }
