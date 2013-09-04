@@ -2,7 +2,7 @@ module Namecheap
   class Api
     
     SANDBOX = 'https://api.sandbox.namecheap.com/xml.response'
-    PRODUCTION = 'https://api.namecheap.com/xml.response'
+    PRODUCTION = 'https://api.sandbox.namecheap.com/xml.response'
     ENVIRONMENT = defined?(Rails) && Rails.respond_to?(:env) ? Rails.env : (ENV["RACK_ENV"] || 'development')
     ENDPOINT = (ENVIRONMENT == 'production' ? PRODUCTION : SANDBOX)
     
