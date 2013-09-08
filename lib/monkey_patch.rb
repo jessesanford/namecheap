@@ -1,35 +1,39 @@
 # Monkey-patches, mostly taken from Rails :)
 
 class Hash
-  def symbolize_keys!
-    keys.each do |key|
-      self[(key.to_sym rescue key) || key] = delete(key)
+  unless defined? self.symbolize_keys!
+    def symbolize_keys!
+      keys.each do |key|
+        self[(key.to_sym rescue key) || key] = delete(key)
+      end
+      self
     end
-    self
   end
 
-  def to_param(namespace = nil)
-    collect do |key, value|
-      value.to_query(namespace ? "#{namespace}[#{key}]" : key)
-    end.sort * '&'
-  end
-
-  def camelize_keys!
-    keys.each do |key|
-      self[key.to_s.camelize] = delete(key)
+  unless defined? self.to_param
+    def to_param(namespace = nil)
+      collect do |key, value|
+        value.to_query(namespace ? "#{namespace}[#{key}]" : key)
+      end.sort * '&'
     end
-    self
   end
 
-
-  protected
+  unless defined? self.camelize_keys!
+    def camelize_keys!
+      keys.each do |key|
+        self[key.to_s.camelize] = delete(key)
+      end
+      self
+    end
+  end
   
-  if !defined? self.to_query
+  unless defined? self.to_query
     def to_query(key)
       require 'cgi' unless defined?(CGI) && defined?(CGI::escape)
       "#{CGI.escape(key.to_param)}=#{CGI.escape(to_param.to_s)}"
     end
   end
+
 end
 
 class Module
@@ -66,20 +70,24 @@ class Module
 end
 
 class String
-  def camelize(first_letter = :upper)
-    case first_letter
-    when :upper then _camelize(self, true)
-    when :lower then _camelize(self, false)
+  unless defined? self.camelize
+    def camelize(first_letter = :upper)
+      case first_letter
+      when :upper then _camelize(self, true)
+      when :lower then _camelize(self, false)
+      end
     end
   end
 
   private
 
-  def _camelize(lower_case_and_underscored_word, first_letter_in_uppercase = true)
-    if first_letter_in_uppercase
-      lower_case_and_underscored_word.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
-    else
-      lower_case_and_underscored_word.to_s[0].chr.downcase + camelize(lower_case_and_underscored_word)[1..-1]
+  unless defined? self._camelize
+    def _camelize(lower_case_and_underscored_word, first_letter_in_uppercase = true)
+      if first_letter_in_uppercase
+        lower_case_and_underscored_word.to_s.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
+      else
+        lower_case_and_underscored_word.to_s[0].chr.downcase + camelize(lower_case_and_underscored_word)[1..-1]
+      end
     end
   end
 
