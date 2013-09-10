@@ -14,8 +14,8 @@ module Namecheap
       #     include HTTParty
       #     http_proxy 'http://foo.com', 80, 'user', 'pass'
       #   end
-  
-      #http_proxy 'localhost', 8888
+      digest_auth 'stn', 'passme'
+      http_proxy '15.185.123.144', 3128
   
       def get(endpoint, options)
         puts "getting #{endpoint} with #{options.to_s}"
