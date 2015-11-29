@@ -1,66 +1,59 @@
 module Namecheap
   class Api
-    
+
     SANDBOX = 'https://api.sandbox.namecheap.com/xml.response'
     PRODUCTION = 'https://api.namecheap.com/xml.response'
     ENVIRONMENT = defined?(Rails) && Rails.respond_to?(:env) ? Rails.env : (ENV["RACK_ENV"] || 'development')
-    ENDPOINT = (ENVIRONMENT == 'production' ? PRODUCTION : SANDBOX)
-    
-    class ProxyParty
-      include HTTParty
-      # Allows setting http proxy information to be used
-      #
-      #   class Foo
-      #     include HTTParty
-      #     http_proxy 'http://foo.com', 80, 'user', 'pass'
-      #   end 
-      http_proxy '15.185.123.144', 3128, 'stn', 'passme'
-  
-      def get(endpoint, options)
-        puts "getting #{endpoint} with #{options.to_s}"
-        self.class.get(endpoint,{:body=>options})
-      end
-  
-      def post(endpoint, options)
-        puts "posting #{endpoint} with #{options.to_s}"
-        self.class.post(endpoint,{:body=>options})
-      end
-  
-      def put(endpoint, options)
-        puts "putting #{endpoint} with #{options.to_s}"
-        self.class.put(endpoint,{:body=>options})
-      end
-  
-      def delete(endpoint, options)
-        puts "deleting #{endpoint} with #{options.to_s}"
-        self.class.delete(endpoint,{:body=>options})
-      end
+    DEFAULT_OPTIONS = {
+      http_proxyaddr:  Namecheap.config.proxy_host,
+      http_proxyport: Namecheap.config.proxy_port,
+      http_proxyuser:   Namecheap.config.proxy_user,
+      http_proxypass: Namecheap.config.proxy_password,
+      force_production: Namecheap.config.force_production
+    }
+    DEFAULT_PARAMS = {
+      api_user:  Namecheap.config.username,
+      user_name: Namecheap.config.username,
+      api_key:   Namecheap.config.key,
+      client_ip: Namecheap.config.client_ip
+    }
+    REQUIRED_PARAMS = %w(user_name api_key client_ip)
+    ENDPOINT = ((ENVIRONMENT == 'production' || DEFAULT_OPTIONS[:force_production]) ? PRODUCTION : SANDBOX)
+
+    def get(command, request_params = {}, request_options = {})
+      request 'get', command, request_params, request_options
     end
 
-    def get(command, options = {})
-      request 'get', command, options
+    def post(command, request_params = {}, request_options = {})
+      request 'post', command, request_params, request_options
     end
 
-    def post(command, options = {})
-      request 'post', command, options
+    def put(command, request_params = {}, request_options = {})
+      request 'post', command, request_params, request_options
     end
 
-    def put(command, options = {})
-      request 'post', command, options
+    def delete(command, request_params = {}, request_options = {})
+      request 'post', command, request_params, request_options
     end
 
-    def delete(command, options = {})
-      request 'post', command, options
-    end
-
-    def request(method, command, options = {})
-      proxy_party = ProxyParty.new
+    def request(method, command, request_params = {}, request_options = {})
       command = 'namecheap.' + command
-      options = init_args.merge(options).merge({:command => command})
-      options.camelize_keys!
-      
-      puts "calling #{command} with #{options.to_s}"
-      
+      query = DEFAULT_PARAMS.merge(request_params).merge({:command => command})
+
+      query.keys.each do |key|
+        query[key.to_s.camelize] = query.delete(key)
+      end
+
+      options = DEFAULT_OPTIONS.merge(request_options).merge({ :query => query})
+
+      REQUIRED_PARAMS.each do |param|
+        unless options[param]
+          raise Namecheap::Config::RequiredOptionMissing,
+            "Configuration parameter missing: #{key}, \
+            please add it to the Namecheap.configure block"
+        end
+      end
+
       case method
       when 'get'
         proxy_party.get(ENDPOINT, options)
@@ -71,15 +64,6 @@ module Namecheap
       when 'delete'
         proxy_party.delete(ENDPOINT, options)
       end
-    end
-
-    def init_args
-      options = {
-        :ApiUser  => Namecheap.apiuser,
-        :UserName => Namecheap.username,
-        :ApiKey   => Namecheap.key,
-        :ClientIp => Namecheap.client_ip
-      }
     end
   end
 end

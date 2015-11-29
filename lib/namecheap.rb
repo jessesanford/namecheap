@@ -1,10 +1,16 @@
 require 'httparty'
-require 'monkey_patch'
 require 'pp'
-require "#{File.dirname(__FILE__)}/namecheap/api.rb"
 
-$LOAD_PATH.unshift("#{File.dirname(__FILE__)}/namecheap")
-Dir.glob("#{File.dirname(__FILE__)}/namecheap/*.rb") { |lib| require File.basename(lib, '.*') }
+require 'namecheap/version'
+require 'namecheap/api'
+require 'namecheap/config'
+require 'namecheap/domains'
+require 'namecheap/dns'
+require 'namecheap/ns'
+require 'namecheap/ssl'
+require 'namecheap/transfers'
+require 'namecheap/users'
+require 'namecheap/whois_guard'
 
 module Namecheap
 
@@ -23,13 +29,6 @@ module Namecheap
     block_given? ? yield(Config) : Config
   end
   alias :config :configure
-  
-  # Take all the public instance methods from the Config singleton and allow
-  # them to be accessed through the Namecheap module directly.
-  #
-  # @example Delegate the configuration methods.
-  #   Namecheap.key = 'newkey'
-  delegate *(Config.public_instance_methods(false) << { :to => Config })
 
   attr_accessor :domains, :dns, :ns, :transfers, :ssl, :users, :whois_guard, :proxy_party
   self.domains = Namecheap::Domains.new
