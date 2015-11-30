@@ -20,7 +20,7 @@ module Namecheap
   # @example Set up configuration options.
   #   Namecheap.configure do |config|
   #     config.key = "apikey"
-  #     config.username = "apiuser"
+  #     config.user_name = "apiuser"
   #     config.client_ip = "127.0.0.1"
   #   end
   # @return [ Config ] The configuration obejct.

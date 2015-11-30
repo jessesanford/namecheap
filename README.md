@@ -14,7 +14,7 @@ In your initializers, configure Namecheap like so:
 ```ruby
 Namecheap.configure do |config|
   config.key = 'apikey'
-  config.username = 'apiuser'
+  config.user_name = 'apiuser'
   config.client_ip = '127.0.0.1'
 end
 ```
