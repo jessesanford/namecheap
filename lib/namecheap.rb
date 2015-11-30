@@ -1,5 +1,4 @@
 require 'httparty'
-require 'pp'
 
 require 'namecheap/version'
 require 'namecheap/api'
