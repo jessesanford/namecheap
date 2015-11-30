@@ -1,3 +1,3 @@
 module Namecheap
-  VERSION = "0.3.10"
+  VERSION = "0.3.2"
 end
