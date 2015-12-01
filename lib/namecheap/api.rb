@@ -11,6 +11,7 @@ module Namecheap
         http_proxyport:   Namecheap.config.proxy_port,
         http_proxyuser:   Namecheap.config.proxy_user,
         http_proxypass:   Namecheap.config.proxy_password,
+        timeout:          Namecheap.config.request_timeout,
         force_production: Namecheap.config.force_production
       }
     }

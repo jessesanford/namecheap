@@ -34,12 +34,12 @@ module Namecheap
     end
 
     # Checks the availability of domains.
-    # @see http://developer.namecheap.com/docs/doku.php?id=api-reference:domains:check
+    # @see https://www.namecheap.com/support/api/methods/domains/check.aspx
     def check(domains = [], options = {})
       if domains.respond_to?(:join)
         domains = domains.join(',')
       end
-      
+
       options = {:DomainList => domains}.merge(options)
       get 'domains.check', options
     end
